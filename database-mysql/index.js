@@ -7,8 +7,8 @@ var connection = mysql.createConnection({
   database : 'pokedex'
 });
 
-var selectAll = function(callback) {
-  connection.query('SELECT * FROM items', function(err, results, fields) {
+var selectAll = function(tableName, callback) {
+  connection.query(`SELECT * FROM ${tableName}`, function(err, results, fields) {
     if(err) {
       callback(err, null);
     } else {
