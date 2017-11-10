@@ -37,6 +37,17 @@ USE pokedex;
  -- Table 'type'
  --
  -- ---
+ -- ---
+ -- Globals
+ -- ---
+
+ -- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+ -- SET FOREIGN_KEY_CHECKS=0;
+
+ -- ---
+ -- Table 'type'
+ --
+ -- ---
 
  DROP TABLE IF EXISTS `type`;
 
@@ -90,6 +101,12 @@ USE pokedex;
    `back_sprite` VARCHAR(200) NOT NULL DEFAULT 'NULL',
    `front_sprite` VARCHAR(200) NULL DEFAULT NULL,
    `pokedex_entry` VARCHAR(200) NULL DEFAULT NULL,
+   `speed` INTEGER NOT NULL,
+   `special_defense` INTEGER NOT NULL,
+   `special_attack` INTEGER NOT NULL,
+   `defense` INTEGER NOT NULL,
+   `attack` INTEGER NOT NULL,
+   `hp` INTEGER NOT NULL,
    PRIMARY KEY (`id`)
  );
 
@@ -159,8 +176,8 @@ USE pokedex;
  -- ('','','','');
  -- INSERT INTO `super_effective` (`id`,`id_attack_type`,`id_defense_type`) VALUES
  -- ('','','');
- -- INSERT INTO `pokemon` (`id`,`name`,`id_primary_type`,`id_secondary_type`,`back_sprite`,`front_sprite`,`pokedex_entry`) VALUES
- -- ('','','','','','','');
+ -- INSERT INTO `pokemon` (`id`,`name`,`id_primary_type`,`id_secondary_type`,`back_sprite`,`front_sprite`,`pokedex_entry`,`speed`,`special_defense`,`special_attack`,`defense`,`attack`,`hp`) VALUES
+ -- ('','','','','','','','','','','','','');
  -- INSERT INTO `moves` (`id`,`name`,`damage_class`,`power`,`accuracy`,`id_type`) VALUES
  -- ('','','','','','');
  -- INSERT INTO `pokemon_moves` (`id`,`id_pokemon`,`id_moves`) VALUES
