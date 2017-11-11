@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-var Promise = require("bluebird");
+var Promise = require('bluebird');
 var helpers = require('./initDatabasePopulate.js')
 
 var connection = mysql.createConnection({host: 'localhost', user: 'root', password: '', database: 'pokedex'});
@@ -37,8 +37,7 @@ var getAllMoves = function(results, url, callback) {
           VALUES ("${move.name}", "${move.damage_class.name}", ${move.power}, ${accuracy}, "${move.type.name}")`
 
         connection.query(queryString, function(err, results, fields) {
-          if (err) {
-            console.log(err);
+          if (!results) {
           } else {
             console.log('Move added');
           }
@@ -60,13 +59,13 @@ var getAllPokemon = function(results, url, callback) {
   if (!results.length) {
     helpers.fetch(url).then((data) => {
       return helpers.fetchPokemonLoop(data, (pokemon) => {
-        var queryString = `INSERT INTO pokemon (name, url)
-            VALUES ("${pokemon.name}", "${'https://pokeapi.co' + pokemon.location_area_encounters.substr(0, pokemon.location_area_encounters.length - 11)}")`
+        var queryString = `INSERT INTO pokemon (id, name, url)
+            VALUES (${pokemon.id}, "${pokemon.name}", "https://pokeapi.co/api/v2/pokemon/${pokemon.id}")`
         connection.query(queryString, function(err, results, fields) {
           if (err) {
             console.log(err);
           } else {
-            console.log(`${pokemon.name} Added successfully!`)
+            console.log(`Pokemon # ${pokemon.id}, ${pokemon.name} added successfully!`)
             helpers.fetchPokemonMovesLoop(pokemon.moves, selectMoveIndex, function(err, info) {
               if (info) {
                 var query = `INSERT INTO pokemon_moves (id_pokemon, id_moves)

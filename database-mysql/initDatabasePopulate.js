@@ -51,7 +51,7 @@ var fetchPokemonMovesLoop = function(arr, prom, callback) {
               if (res.length) {
                 callback(null, res);
               } else {
-                callback('move not in db')
+                callback()
               }
             });
         });

@@ -74,7 +74,7 @@ USE pokedex;
  DROP TABLE IF EXISTS `pokemon`;
 
  CREATE TABLE `pokemon` (
-   `id` INTEGER NOT NULL AUTO_INCREMENT,
+   `id` INTEGER NOT NULL,
    `name` VARCHAR(20) NOT NULL DEFAULT 'NULL',
    `url` VARCHAR(200) NOT NULL,
    PRIMARY KEY (`id`)
