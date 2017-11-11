@@ -57,12 +57,11 @@ selectAll = Promise.promisify(selectAll);
 selectMoveIndex = Promise.promisify(selectMoveIndex);
 
 var getAllPokemon = function(results, url, callback) {
-  console.log(results.length, 'GET ALL POKEMON RESULTS LENGTH')
   if (!results.length) {
     helpers.fetch(url).then((data) => {
       return helpers.fetchPokemonLoop(data, (pokemon) => {
         var queryString = `INSERT INTO pokemon (name, url)
-            VALUES ("${pokemon.name}", "${ 'https://pokeapi.co' + pokemon.location_area_encounters.substr(0, pokemon.location_area_encounters.length - 11)}")`
+            VALUES ("${pokemon.name}", "${'https://pokeapi.co' + pokemon.location_area_encounters.substr(0, pokemon.location_area_encounters.length - 11)}")`
         connection.query(queryString, function(err, results, fields) {
           if (err) {
             console.log(err);
@@ -70,8 +69,6 @@ var getAllPokemon = function(results, url, callback) {
             console.log(`${pokemon.name} Added successfully!`)
             helpers.fetchPokemonMovesLoop(pokemon.moves, selectMoveIndex, function(err, info) {
               if (info) {
-                // console.log(info, 'INFO THINGY')
-                // console.log(results.insertId, 'insertID of pokemon')
                 var query = `INSERT INTO pokemon_moves (id_pokemon, id_moves)
               VALUES (${results.insertId}, ${info[0].id})`
                 connection.query(query, function(err, res, field) {
@@ -94,7 +91,7 @@ var getAllPokemon = function(results, url, callback) {
 }
 getAllPokemon = Promise.promisify(getAllPokemon);
 
-selectAll('moves', '').then((data) => {
+selectAll('moves', '').then((data) => { // populates database if empty
   return getAllMoves(data, 'https://pokeapi.co/api/v2/move-category/0');
 }).then(() => {
   return selectAll('pokemon', '');
