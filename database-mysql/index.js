@@ -1,7 +1,6 @@
 var mysql = require('mysql');
-// var $ = require('jquery');
 var Promise = require("bluebird");
-var populate = require('./initDatabasePopulate.js')
+var helpers = require('./initDatabasePopulate.js')
 
 var connection = mysql.createConnection({host: 'localhost', user: 'root', password: '', database: 'pokedex'});
 
@@ -15,34 +14,64 @@ var selectAll = function(tableName, callback) {
   });
 };
 
-selectAll('pokemon', function(err, results) {
-  console.log(results)
-  console.log(populate.fetchPokemon)
+// selectAll('pokemon', function(err, results) {
+//   if (err) {
+//     console.log(err, 'there was an error connecting to the database')
+//     return;
+//   }
+//   if (!results.length) {
+//     helpers.fetch('https://pokeapi.co/api/v2/pokemon/?limit=151').then((data) => {
+//       for (var pokemon of data.results) {
+//         var queryString = `INSERT INTO pokemon (name, url)
+//           VALUES ("${pokemon.name}", "${pokemon.url}")`
+//         connection.query(queryString, function(err, results, fields) {
+//           if (err) {
+//             console.log(err);
+//           } else {
+//             console.log(results, 'results field');
+//           }
+//         });
+//       }
+//       return;
+//     }).catch((e) => {
+//       console.log(e);
+//       return;
+//     })
+//   }
+// })
+
+selectAll('moves', function(err, results) {
   if (err) {
     console.log(err, 'there was an error connecting to the database')
     return;
   }
   if (!results.length) {
-    populate.fetchPokemon().then((data) => {
-      for (var pokemon of data) {
-        var queryString = `INSERT INTO pokemon (name, url)
-          VALUES ("${pokemon.name}", "${pokemon.url}")`
+    helpers.fetch('https://pokeapi.co/api/v2/move-category/0').then((data) => {
+      helpers.fetchLoop(data, (move) => {
+        var accuracy = move.accuracy || 100;
+        if (move.type.name === 'shadow' || !(move.name && move.damage_class.name && move.power && move.type.name)) {
+          return;
+        }
+        console.log(`${move.name} with a power of ${move.power} with accuracy of ${accuracy}`);
+        var queryString = `INSERT INTO moves (name, damage_class, power, accuracy, type)
+          VALUES ("${move.name}", "${move.damage_class.name}", ${move.power}, ${accuracy}, "${move.type.name}")`
+
         connection.query(queryString, function(err, results, fields) {
           if (err) {
             console.log(err);
           } else {
-            console.log(results, 'results field');
-            console.log(`${pokemon.name} was added to the DB!`)
+            // console.log('Move added');
           }
         });
-      }
+      });
+
       return;
     }).catch((e) => {
       console.log(e);
       return;
     })
   }
-
 })
+
 
 module.exports.selectAll = selectAll;

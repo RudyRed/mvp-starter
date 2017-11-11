@@ -59,43 +59,12 @@ USE pokedex;
  -- Table 'type'
  --
  -- ---
-
- DROP TABLE IF EXISTS `type`;
-
- CREATE TABLE `type` (
-   `id` INTEGER NOT NULL AUTO_INCREMENT,
-   `name` VARCHAR(10) NOT NULL DEFAULT 'NULL',
-   PRIMARY KEY (`id`)
- );
-
  -- ---
- -- Table 'weaknesses'
- --
+ -- Globals
  -- ---
 
- DROP TABLE IF EXISTS `weaknesses`;
-
- CREATE TABLE `weaknesses` (
-   `id` INTEGER NOT NULL AUTO_INCREMENT,
-   `id_attack_type` INTEGER NOT NULL,
-   `id_defense_type` INTEGER NOT NULL,
-   `immune` INT NOT NULL DEFAULT 0,
-   PRIMARY KEY (`id`)
- );
-
- -- ---
- -- Table 'super_effective'
- --
- -- ---
-
- DROP TABLE IF EXISTS `super_effective`;
-
- CREATE TABLE `super_effective` (
-   `id` INTEGER NOT NULL AUTO_INCREMENT,
-   `id_attack_type` INTEGER NOT NULL,
-   `id_defense_type` INTEGER NOT NULL,
-   PRIMARY KEY (`id`)
- );
+ -- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+ -- SET FOREIGN_KEY_CHECKS=0;
 
  -- ---
  -- Table 'pokemon'
@@ -112,32 +81,58 @@ USE pokedex;
  );
 
  -- ---
+ -- Table 'moves'
+ --
+ -- ---
+
+ DROP TABLE IF EXISTS `moves`;
+
+ CREATE TABLE `moves` (
+   `id` INTEGER NOT NULL AUTO_INCREMENT,
+   `name` VARCHAR(30) NULL DEFAULT NULL,
+   `damage_class` VARCHAR(20) NOT NULL,
+   `power` INTEGER NULL DEFAULT NULL,
+   `accuracy` INTEGER NOT NULL,
+   `type` VARCHAR(20) NOT NULL,
+   PRIMARY KEY (`id`)
+ );
+
+ -- ---
+ -- Table 'pokemon_moves'
+ --
+ -- ---
+
+ DROP TABLE IF EXISTS `pokemon_moves`;
+
+ CREATE TABLE `pokemon_moves` (
+   `id` INTEGER NOT NULL AUTO_INCREMENT,
+   `id_pokemon` INTEGER NOT NULL,
+   `id_moves` INTEGER NOT NULL,
+   PRIMARY KEY (`id`)
+ );
+
+ -- ---
  -- Foreign Keys
  -- ---
 
- ALTER TABLE `weaknesses` ADD FOREIGN KEY (id_attack_type) REFERENCES `type` (`id`);
- ALTER TABLE `weaknesses` ADD FOREIGN KEY (id_defense_type) REFERENCES `type` (`id`);
- ALTER TABLE `super_effective` ADD FOREIGN KEY (id_attack_type) REFERENCES `type` (`id`);
- ALTER TABLE `super_effective` ADD FOREIGN KEY (id_defense_type) REFERENCES `type` (`id`);
+ ALTER TABLE `pokemon_moves` ADD FOREIGN KEY (id_pokemon) REFERENCES `pokemon` (`id`);
+ ALTER TABLE `pokemon_moves` ADD FOREIGN KEY (id_moves) REFERENCES `moves` (`id`);
 
  -- ---
  -- Table Properties
  -- ---
 
- -- ALTER TABLE `type` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
- -- ALTER TABLE `weaknesses` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
- -- ALTER TABLE `super_effective` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
  -- ALTER TABLE `pokemon` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+ -- ALTER TABLE `moves` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+ -- ALTER TABLE `pokemon_moves` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
  -- ---
  -- Test Data
  -- ---
 
- -- INSERT INTO `type` (`id`,`name`) VALUES
- -- ('','');
- -- INSERT INTO `weaknesses` (`id`,`id_attack_type`,`id_defense_type`,`immune`) VALUES
- -- ('','','','');
- -- INSERT INTO `super_effective` (`id`,`id_attack_type`,`id_defense_type`) VALUES
- -- ('','','');
  -- INSERT INTO `pokemon` (`id`,`name`,`url`) VALUES
+ -- ('','','');
+ -- INSERT INTO `moves` (`id`,`name`,`damage_class`,`power`,`accuracy`,`type`) VALUES
+ -- ('','','','','','');
+ -- INSERT INTO `pokemon_moves` (`id`,`id_pokemon`,`id_moves`) VALUES
  -- ('','','');
