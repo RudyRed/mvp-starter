@@ -1,3 +1,4 @@
+var mysql = require('mysql');
 var request = require('request');
 var Promise = require("bluebird");
 
@@ -15,7 +16,7 @@ var fetch = function(url, callback) {
   });
 }
 
- fetch = Promise.promisify(fetch);
+fetch = Promise.promisify(fetch);
 
 
 var fetchLoop = function(arr, callback) {
@@ -30,6 +31,10 @@ var fetchLoop = function(arr, callback) {
 
 fetchLoop = Promise.promisify(fetchLoop);
 
+
+
+
+// module.exports.getAllMoves = getAllMoves;
 module.exports.fetchLoop = fetchLoop;
 module.exports.fetch = fetch;
 // module.exports.fetchTypes = Promise.promisify(fetchTypes);
