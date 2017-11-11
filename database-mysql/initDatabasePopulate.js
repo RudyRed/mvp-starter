@@ -19,7 +19,9 @@ var fetch = function(url, callback) {
 fetch = Promise.promisify(fetch);
 
 
-var fetchLoop = function(arr, callback) {
+var fetchMovesLoop = function(arr, callback) {
+  // console.log(arr)
+  // if (arr.moves) {
     return arr.moves.reduce(function(promise, move) {
         return promise.then(function() {
             return fetch(move.url).done(function(res) {
@@ -27,14 +29,44 @@ var fetchLoop = function(arr, callback) {
             });
         });
     }, Promise.resolve());
+  // }
 }
 
-fetchLoop = Promise.promisify(fetchLoop);
+fetchMovesLoop = Promise.promisify(fetchMovesLoop);
+
+var fetchPokemonLoop = function(arr, callback) {
+    return arr.results.reduce(function(promise, pokemon) {
+        return promise.then(function() {
+            return fetch(pokemon.url).done(function(res) {
+                callback(res);
+            });
+        });
+    }, Promise.resolve());
+}
+
+var fetchPokemonMovesLoop = function(arr, prom, callback) {
+    return arr.reduce(function(promise, pokemon) {
+        return promise.then(function() {
+            return prom(pokemon.move.name).done(function(res) {
+              if (res.length) {
+                callback(null, res);
+              } else {
+                callback('move not in db')
+              }
+            });
+        });
+    }, Promise.resolve());
+}
+
+fetchPokemonLoop = Promise.promisify(fetchPokemonLoop);
+fetchPokemonMovesLoop = Promise.promisify(fetchPokemonMovesLoop);
 
 
 
 
 // module.exports.getAllMoves = getAllMoves;
-module.exports.fetchLoop = fetchLoop;
+module.exports.fetchPokemonMovesLoop = fetchPokemonMovesLoop;
+module.exports.fetchPokemonLoop = fetchPokemonLoop;
+module.exports.fetchMovesLoop = fetchMovesLoop;
 module.exports.fetch = fetch;
 // module.exports.fetchTypes = Promise.promisify(fetchTypes);
