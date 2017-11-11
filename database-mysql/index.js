@@ -69,7 +69,7 @@ var getAllPokemon = function(results, url, callback) {
             helpers.fetchPokemonMovesLoop(pokemon.moves, selectMoveIndex, function(err, info) {
               if (info) {
                 var query = `INSERT INTO pokemon_moves (id_pokemon, id_moves)
-              VALUES (${results.insertId}, ${info[0].id})`
+              VALUES (${pokemon.id}, ${info[0].id})`
                 connection.query(query, function(err, res, field) {
                   console.log(`${pokemon.name} with move ${info[0].name} Added`)
                 })

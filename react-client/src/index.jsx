@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import List from './components/List.jsx';
+import PokeDropList from './components/PokeDropList.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -30,7 +31,7 @@ class App extends React.Component {
   render () {
     return (<div>
       <h1>Item List</h1>
-      <List pokeBox={this.state.pokeBox}/>
+      <PokeDropList pokeBox={this.state.pokeBox}/>
     </div>)
   }
 }
