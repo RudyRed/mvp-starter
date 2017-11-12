@@ -14,6 +14,21 @@ var selectAll = function(tableName, queryConstrants, callback) {
   });
 };
 
+var selectPokemonsMoves = function(pokemonId, callback) {
+  var queryString = `SELECT pm.id_pokemon, m.name, m.damage_class, m.power, m.accuracy, m.type
+  FROM pokemon_moves pm
+    INNER JOIN moves m
+      ON pm.id_moves = m.id
+    WHERE pm.id_pokemon = ${pokemonId}`
+  connection.query(queryString, function(err, results, fields) {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
 var selectMoveIndex = function(moveName, callback) {
   connection.query(`SELECT id, name FROM moves where name = "${moveName}"`, function(err, results, fields) {
     if (err) {
@@ -101,3 +116,4 @@ selectAll('moves', '').then((data) => { // populates database if empty
   return;
 })
 module.exports.selectAll = selectAll;
+module.exports.selectPokemonsMoves = selectPokemonsMoves;
