@@ -15,14 +15,31 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    if (!this.state.pokeBox.length) {
+      $.ajax({
+        url: '/pokemon',
+        success: (data) => {
+          this.setState({pokeBox: data})
+        },
+        error: (err) => {
+          console.log('err', err);
+        }
+      });
+    }
+  }
+  pokemonSelectionSubmit(pokemonId, player) {
+    console.log('test')
+    console.log(pokemonId)
+    console.log(this)
     $.ajax({
-      url: '/pokemon',
+      url: this.state.pokeBox[pokemonId -1].url,
       success: (data) => {
         console.log(typeof data)
-        console.log(data)
-        this.setState({
-          pokeBox: data
-        })
+        if (player === 'One') {
+          this.setState({player1: data})
+        } else {
+          this.setState({player2: data})
+        }
       },
       error: (err) => {
         console.log('err', err);
@@ -30,13 +47,15 @@ class App extends React.Component {
     });
   }
 
-  render () {
+  render() {
     return (<div>
       <h1>Item List</h1>
-      Player One: <PokeDropList pokeBox={this.state.pokeBox}/>
-      Player Two: <PokeDropList pokeBox={this.state.pokeBox}/>
+      {!this.state.player1 && (<PokeDropList player={'One'} pokeBox={this.state.pokeBox} handleSubmit={this.pokemonSelectionSubmit.bind(this)}/>)}
+      {!this.state.player2 && (<PokeDropList player={'Two'} pokeBox={this.state.pokeBox} handleSubmit={this.pokemonSelectionSubmit.bind(this)}/>)}
+      {this.state.player1 && (<img src={this.state.player1.sprites.back_default} />)}
+      {this.state.player2 && (<img src={this.state.player2.sprites.front_default} />)}
     </div>)
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App/>, document.getElementById('app'));
