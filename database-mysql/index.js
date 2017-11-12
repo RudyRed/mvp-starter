@@ -95,7 +95,7 @@ selectAll('moves', '').then((data) => { // populates database if empty
 }).then(() => {
   return selectAll('pokemon', '');
 }).then((data) => {
-  return getAllPokemon(data, 'https://pokeapi.co/api/v2/pokemon/?limit=151');
+  return getAllPokemon(data, 'https://pokeapi.co/api/v2/pokemon/?limit=40');
 }).catch((e) => {
   console.log(e);
   return;

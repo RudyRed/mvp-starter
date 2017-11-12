@@ -20,8 +20,6 @@ fetch = Promise.promisify(fetch);
 
 
 var fetchMovesLoop = function(arr, callback) {
-  // console.log(arr)
-  // if (arr.moves) {
     return arr.moves.reduce(function(promise, move) {
         return promise.then(function() {
             return fetch(move.url).done(function(res) {
@@ -29,7 +27,6 @@ var fetchMovesLoop = function(arr, callback) {
             });
         });
     }, Promise.resolve());
-  // }
 }
 
 fetchMovesLoop = Promise.promisify(fetchMovesLoop);
@@ -64,9 +61,7 @@ fetchPokemonMovesLoop = Promise.promisify(fetchPokemonMovesLoop);
 
 
 
-// module.exports.getAllMoves = getAllMoves;
 module.exports.fetchPokemonMovesLoop = fetchPokemonMovesLoop;
 module.exports.fetchPokemonLoop = fetchPokemonLoop;
 module.exports.fetchMovesLoop = fetchMovesLoop;
 module.exports.fetch = fetch;
-// module.exports.fetchTypes = Promise.promisify(fetchTypes);
