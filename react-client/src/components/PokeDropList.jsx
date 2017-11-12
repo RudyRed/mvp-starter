@@ -7,13 +7,16 @@ class PokeDropList extends React.Component {
       display: true
     }
   }
+
   render() {
     return  ( <div className="playerone">
-      {this.state.display && (<select>
+      {this.state.display && (<form><select>
         <option value="" hidden="hidden">Select your option</option>
         {this.props.pokeBox.map(pokemon => <option value={pokemon.name}>{pokemon.id}: {pokemon.name}</option>)}
-      </select>)}
+      </select> <input type="submit" value="Confirm Pokemon Choice"/> </form>)}
     </div>)
   }
+
 }
-  export default PokeDropList;
+
+export default PokeDropList;

@@ -8,7 +8,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pokeBox: []
+      pokeBox: [],
+      player1: null,
+      player2: null
     }
   }
 
@@ -31,7 +33,8 @@ class App extends React.Component {
   render () {
     return (<div>
       <h1>Item List</h1>
-      <PokeDropList pokeBox={this.state.pokeBox}/>
+      Player One: <PokeDropList pokeBox={this.state.pokeBox}/>
+      Player Two: <PokeDropList pokeBox={this.state.pokeBox}/>
     </div>)
   }
 }
