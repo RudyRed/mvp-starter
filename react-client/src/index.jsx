@@ -13,7 +13,9 @@ class App extends React.Component {
       player1: null,
       player2: null,
       player1Moves: null,
-      player1Moves: null
+      player1Moves: null,
+      pokemon1Ready: false,
+      pokemon2Ready: false
     }
   }
 
@@ -77,6 +79,16 @@ class App extends React.Component {
       }
     });
   }
+  playerReady (pokeName) {
+    if (pokeName === this.state.player1.name) {
+      this.setState({pokemon1Ready: true});
+      console.log('didnt fuck up')
+    } else {
+      this.setState({pokemon2Ready: true});
+      console.log('didnt fuck up')
+      console.log(this.state.pokemon1Ready)
+    }
+  }
 
   render() {
     return (<div>
@@ -85,9 +97,10 @@ class App extends React.Component {
       {!this.state.player2 && (<PokeDropList player={'Two'} pokeBox={this.state.pokeBox} handleSubmit={this.pokemonSelectionSubmit.bind(this)}/>)}
       {(this.state.player1 && (!this.state.player1Moves || !this.state.player2Moves)) && (<img src={this.state.player1.sprites.front_default}/>)}
       {(this.state.player2 && (!this.state.player2Moves || !this.state.player1Moves)) && (<img src={this.state.player2.sprites.front_default}/>)}
-      {(this.state.player1Moves && this.state.player2Moves) && (<ul id="menu">
-          <li><Pokemon1 pokeName={this.state.player1.name} pokeImage={this.state.player1.sprites.back_default} stats={this.state.player1.stats} moves={this.state.player1Moves}/></li>
-          <li><Pokemon2 pokeName={this.state.player2.name} pokeImage={this.state.player2.sprites.front_default} stats={this.state.player2.stats} moves={this.state.player2Moves}/></li>
+
+      {(this.state.player1Moves && this.state.player2Moves) && (<ul id="main">
+          <li><Pokemon1 pokeReady={this.playerReady.bind(this)} pokeName={this.state.player1.name} pokeImage={this.state.player1.sprites.back_default} stats={this.state.player1.stats} moves={this.state.player1Moves}/></li>
+          <li><Pokemon1 pokeReady={this.playerReady.bind(this)} pokeName={this.state.player2.name} pokeImage={this.state.player2.sprites.front_default} stats={this.state.player2.stats} moves={this.state.player2Moves}/></li>
         </ul>)
       }
     </div>)

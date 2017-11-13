@@ -41,7 +41,7 @@ class Pokemon1 extends React.Component {
       alert(`A Pokemon can't have two of the same moves!`)
     } else {
       this.setState({battleTime: true})
-
+      this.props.pokeReady(this.props.pokeName);
     }
   }
 
@@ -49,7 +49,7 @@ class Pokemon1 extends React.Component {
     if (!this.state.battleTime) {
       return (<div>
         <form>
-          <ul id="main">
+          <ul id="menu">
             <li>{this.props.pokeName} Move 1:<select id="move1" value={this.state.move1[0]} onChange={this.changeHandler.bind(this)}>
                 <option value="" hidden="hidden">Select your option</option>
                 {this.props.moves.map(move => <option value={move.name}>{move.name}: type: {move.type}</option>)}
