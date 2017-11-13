@@ -41,7 +41,8 @@ class PokemonMoveSelection extends React.Component {
       alert(`A Pokemon can't have two of the same moves!`)
     } else {
       this.setState({battleTime: true})
-      this.props.pokeReady(this.props.pokeName);
+      console.log([this.state.move1[1], this.state.move2[1], this.state.move3[1], this.state.move4[1]])
+      this.props.pokeReady(this.props.pokeName, [this.state.move1[1], this.state.move2[1], this.state.move3[1], this.state.move4[1]]);
     }
   }
 

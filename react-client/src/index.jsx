@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import PokeDropList from './components/PokeDropList.jsx'
 import PokemonMoveSelection from './components/PokemonMoveSelection.jsx'
-// import Pokemon2 from './components/Pokemon2.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -13,7 +12,7 @@ class App extends React.Component {
       player1: null,
       player2: null,
       player1Moves: null,
-      player1Moves: null,
+      player2Moves: null,
       pokemon1Ready: false,
       pokemon2Ready: false
     }
@@ -79,18 +78,22 @@ class App extends React.Component {
       }
     });
   }
-  playerReady (pokeName) {
+  playerReady (pokeName, moves) {
     if (pokeName === this.state.player1.name) {
       this.setState({pokemon1Ready: true});
+      this.setState({player1Moves: moves})
       console.log('didnt fuck up')
     } else {
+      this.setState({player2Moves: moves})
       this.setState({pokemon2Ready: true});
       console.log('didnt fuck up')
       console.log(this.state.pokemon1Ready)
+      console.log(this.state.player1Moves)
     }
   }
 
   render() {
+    console.log('heloo')
     return (<div>
       <h1>Item List</h1>
       {!this.state.player1 && (<PokeDropList player={'One'} pokeBox={this.state.pokeBox} handleSubmit={this.pokemonSelectionSubmit.bind(this)}/>)}
@@ -98,7 +101,7 @@ class App extends React.Component {
       {(this.state.player1 && (!this.state.player1Moves || !this.state.player2Moves)) && (<img src={this.state.player1.sprites.front_default}/>)}
       {(this.state.player2 && (!this.state.player2Moves || !this.state.player1Moves)) && (<img src={this.state.player2.sprites.front_default}/>)}
 
-      {(this.state.player1Moves && this.state.player2Moves) && (<ul id="main">
+      {(this.state.player1Moves && this.state.player2Moves && (!this.state.pokemon1Ready || !this.state.pokemon2Ready)) && (<ul id="main">
           <li><PokemonMoveSelection pokeReady={this.playerReady.bind(this)} pokeName={this.state.player1.name} pokeImage={this.state.player1.sprites.back_default} stats={this.state.player1.stats} moves={this.state.player1Moves}/></li>
           <li><PokemonMoveSelection pokeReady={this.playerReady.bind(this)} pokeName={this.state.player2.name} pokeImage={this.state.player2.sprites.front_default} stats={this.state.player2.stats} moves={this.state.player2Moves}/></li>
         </ul>)
