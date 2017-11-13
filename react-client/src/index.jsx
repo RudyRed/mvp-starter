@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import PokeDropList from './components/PokeDropList.jsx'
 import PokemonMoveSelection from './components/PokemonMoveSelection.jsx'
+import PokemonBattle from './components/PokemonBattle.jsx'
+
 
 class App extends React.Component {
   constructor(props) {
@@ -14,7 +16,11 @@ class App extends React.Component {
       player1Moves: null,
       player2Moves: null,
       pokemon1Ready: false,
-      pokemon2Ready: false
+      pokemon2Ready: false,
+      player1Turn: false,
+      player2Turn: false,
+      pokemon1HP: '',
+      pokemon2HP: ''
     }
   }
 
@@ -82,30 +88,56 @@ class App extends React.Component {
     if (pokeName === this.state.player1.name) {
       this.setState({pokemon1Ready: true});
       this.setState({player1Moves: moves})
+      this.setState({pokemon1HP: this.state.player1.stats[5].base_stat})
       console.log('didnt fuck up')
     } else {
       this.setState({player2Moves: moves})
       this.setState({pokemon2Ready: true});
+      this.setState({pokemon2HP: this.state.player2.stats[5].base_stat})
       console.log('didnt fuck up')
       console.log(this.state.pokemon1Ready)
       console.log(this.state.player1Moves)
+      console.log(this.state.player1)
+      console.log('POKEMON HP STAT!!!!! ', this.state.pokemon1HP)
+      if (this.state.player1.stats[0].base_stat > this.state.player2.stats[0].base_stat) {
+        this.setState({player1Turn: true})
+      } else if (this.state.player1.stats[0].base_stat = this.state.player2.stats[0].base_stat) {
+        this.setState({player1Turn: true})
+      }
+      else {
+        this.setState({player2Turn: true})
+      }
     }
+  }
+
+  damageCalc () {
+
   }
 
   render() {
     console.log('heloo')
     return (<div>
-      <h1>Item List</h1>
+      <h1><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Pokemon_Stadium.svg/312px-Pokemon_Stadium.svg.png"/></h1>
+      <h2>(but worse)</h2>
       {!this.state.player1 && (<PokeDropList player={'One'} pokeBox={this.state.pokeBox} handleSubmit={this.pokemonSelectionSubmit.bind(this)}/>)}
       {!this.state.player2 && (<PokeDropList player={'Two'} pokeBox={this.state.pokeBox} handleSubmit={this.pokemonSelectionSubmit.bind(this)}/>)}
       {(this.state.player1 && (!this.state.player1Moves || !this.state.player2Moves)) && (<img src={this.state.player1.sprites.front_default}/>)}
       {(this.state.player2 && (!this.state.player2Moves || !this.state.player1Moves)) && (<img src={this.state.player2.sprites.front_default}/>)}
-
       {(this.state.player1Moves && this.state.player2Moves && (!this.state.pokemon1Ready || !this.state.pokemon2Ready)) && (<ul id="main">
-          <li><PokemonMoveSelection pokeReady={this.playerReady.bind(this)} pokeName={this.state.player1.name} pokeImage={this.state.player1.sprites.back_default} stats={this.state.player1.stats} moves={this.state.player1Moves}/></li>
-          <li><PokemonMoveSelection pokeReady={this.playerReady.bind(this)} pokeName={this.state.player2.name} pokeImage={this.state.player2.sprites.front_default} stats={this.state.player2.stats} moves={this.state.player2Moves}/></li>
+          <li><PokemonMoveSelection pokeReady={this.playerReady.bind(this)} pokeName={this.state.player1.name} pokeImage={this.state.player1.sprites.front_default} moves={this.state.player1Moves}/></li>
+          <li><PokemonMoveSelection pokeReady={this.playerReady.bind(this)} pokeName={this.state.player2.name} pokeImage={this.state.player2.sprites.front_default} moves={this.state.player2Moves}/></li>
         </ul>)
       }
+      {(this.state.pokemon1Ready && this.state.pokemon2Ready) && (
+        <ul id="menu">
+          <li>
+            <PokemonBattle attack={this.damageCalc.bind(this)} isTurn={this.state.player1Turn} pokeImg ={this.state.player1.sprites.back_default} moves={this.state.player1Moves} baseHP={this.state.player1.stats[5].base_stat} currentHP={this.state.pokemon1HP}/>
+          </li>
+          <li>
+            <PokemonBattle attack={this.damageCalc.bind(this)} isTurn={this.state.player2Turn} pokeImg={this.state.player2.sprites.front_default} moves={this.state.player2Moves} baseHP={this.state.player2.stats[5].base_stat} currentHP={this.state.pokemon2HP}/>
+          </li>
+        </ul>
+      )}
     </div>)
   }
 }

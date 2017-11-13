@@ -5,12 +5,6 @@ class PokemonMoveSelection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      speed: this.props.stats[0].base_stat,
-      sd: this.props.stats[1].base_stat,
-      sa: this.props.stats[2].base_stat,
-      defense: this.props.stats[3].base_stat,
-      atack: this.props.stats[4].base_stat,
-      hp: this.props.stats[5].base_stat,
       move1: [''],
       move2: [''],
       move3: [''],
