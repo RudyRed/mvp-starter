@@ -33,23 +33,17 @@ class App extends React.Component {
           this.setState({pokeBox: data})
         },
         error: (err) => {
-          console.log('err', err);
         }
       });
     }
   }
 
   pokemonSelectionSubmit(pokemonId, player) {
-    console.log('test')
-    console.log(pokemonId)
-    console.log(this)
     $.ajax({
       type: 'GET',
       url: this.state.pokeBox[pokemonId - 1].url,
       success: (data) => {
-        console.log(typeof data)
         if (player === 'One') {
-          console.log(data)
           this.setState({player1: data});
           this.loadPokemonsMoves(data.id, 1);
         } else {
@@ -58,7 +52,6 @@ class App extends React.Component {
         }
       },
       error: (err) => {
-        console.log('err', err);
       }
     });
   }
@@ -72,36 +65,37 @@ class App extends React.Component {
       },
       success: (data) => {
         if (playerNum === 1) {
-          console.log(data, 'PLAYER ONE')
           this.setState({player1Moves: data});
         } else {
-          console.log(data, 'PLAYER TWO')
           this.setState({player2Moves: data});
         }
       },
       error: (err) => {
-        console.log('err', err);
       }
     });
   }
   playerReady (pokeName, moves) {
     if (pokeName === this.state.player1.name) {
-      this.setState({pokemon1Ready: true});
-      this.setState({player1Moves: moves})
-      this.setState({pokemon1HP: this.state.player1.stats[5].base_stat})
-      console.log('didnt fuck up')
+      this.setState({
+        pokemon1Ready: true,
+        player1Moves: moves,
+        pokemon1HP: this.state.player1.stats[5].base_stat
+      });
+      // this.setState({})
+      // this.setState({})
     } else {
-      this.setState({player2Moves: moves})
-      this.setState({pokemon2Ready: true});
-      this.setState({pokemon2HP: this.state.player2.stats[5].base_stat})
-      console.log('didnt fuck up')
-      console.log(this.state.pokemon1Ready)
-      console.log(this.state.player1Moves)
-      console.log(this.state.player1)
-      console.log('POKEMON HP STAT!!!!! ', this.state.pokemon1HP)
+      this.setState({
+        player2Moves: moves,
+        pokemon2Ready: true,
+        pokemon2HP: this.state.player2.stats[5].base_stat
+      })
+      // this.setState({});
+      // this.setState({pokemon2HP: this.state.player2.stats[5].base_stat})
       if (this.state.player1.stats[0].base_stat > this.state.player2.stats[0].base_stat) {
+
         this.setState({player1Turn: true})
-      } else if (this.state.player1.stats[0].base_stat = this.state.player2.stats[0].base_stat) {
+      } else if (this.state.player1.stats[0].base_stat === this.state.player2.stats[0].base_stat) {
+
         this.setState({player1Turn: true})
       }
       else {
@@ -110,12 +104,66 @@ class App extends React.Component {
     }
   }
 
-  damageCalc () {
+  damageCalc (move, playerNum) {
+    var damage = 0;
+    if (playerNum === 1) {
+      if (Math.random() * 100 >  this.state.player1Moves[move].accuracy) {
+        alert(`${this.state.player1.name}'s attack missed!`);
+      } else {
+        if (this.state.player1Moves[move].damage_class === "physical") {
+          damage = ((((2 * 50 / 5 + 2) * this.state.player1.stats[4].base_stat
+          * this.state.player1Moves[move].power / this.state.player2.stats[3].base_stat
+        ) / 50) + 2)
+           *  Math.random()
+        } else {
+          damage = ((((2 * 50 / 5 + 2) * this.state.player1.stats[2].base_stat
+          * this.state.player1Moves[move].power / this.state.player2.stats[1].base_stat
+        ) / 50) + 2)
+           *  Math.random()
+        }
+        if (this.state.pokemon2HP - Math.floor(damage) > 0) {
+          this.setState({
+            pokemon2HP: this.state.pokemon2HP - Math.floor(damage)
+          })
+        } else {
+          this.setState({pokemon2HP: 0})
+          alert(`${this.state.player2.name} has fainted! ${this.state.player1.name} wins!`)
+        }
+      }
+    } else {
+      if (Math.random() * 100 >  this.state.player1Moves[move].accuracy) {
+        alert(`${this.state.player2.name}'s attack missed!`);
+      } else {
+        if (this.state.player2Moves[move].damage_class === "physical") {
+          damage = ((((2 * 50 / 5 + 2) * this.state.player2.stats[4].base_stat
+          * this.state.player2Moves[move].power / this.state.player1.stats[3].base_stat
+        ) / 50) + 2)
+           *  Math.random()
+        } else {
+          damage = ((((2 * 50 / 5 + 2) * this.state.player2.stats[2].base_stat
+          * this.state.player2Moves[move].power / this.state.player1.stats[1].base_stat
+        ) / 50) + 2)
+           *  Math.random()
+        }
+        if (this.state.pokemon1HP - Math.floor(damage) > 0) {
+          this.setState({
+            pokemon1HP: this.state.pokemon1HP - Math.floor(damage)
+          })
+        } else {
+          this.setState({pokemon1HP: 0})
+          alert(`${this.state.player1.name} has fainted! ${this.state.player2.name} wins!`)
+        }
+      }
+    }
 
+
+    this.setState({
+      player1Turn: !this.state.player1Turn,
+      player2Turn: !this.state.player2Turn
+    })
   }
 
   render() {
-    console.log('heloo')
     return (<div>
       <h1><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Pokemon_Stadium.svg/312px-Pokemon_Stadium.svg.png"/></h1>
       <h2>(but worse)</h2>
@@ -131,10 +179,10 @@ class App extends React.Component {
       {(this.state.pokemon1Ready && this.state.pokemon2Ready) && (
         <ul id="menu">
           <li>
-            <PokemonBattle attack={this.damageCalc.bind(this)} isTurn={this.state.player1Turn} pokeImg ={this.state.player1.sprites.back_default} moves={this.state.player1Moves} baseHP={this.state.player1.stats[5].base_stat} currentHP={this.state.pokemon1HP}/>
+            <PokemonBattle playerNum={1} attack={this.damageCalc.bind(this)} isTurn={this.state.player1Turn} pokeImg ={this.state.player1.sprites.back_default} moves={this.state.player1Moves} baseHP={this.state.player1.stats[5].base_stat} currentHP={this.state.pokemon1HP}/>
           </li>
           <li>
-            <PokemonBattle attack={this.damageCalc.bind(this)} isTurn={this.state.player2Turn} pokeImg={this.state.player2.sprites.front_default} moves={this.state.player2Moves} baseHP={this.state.player2.stats[5].base_stat} currentHP={this.state.pokemon2HP}/>
+            <PokemonBattle playerNum={2}attack={this.damageCalc.bind(this)} isTurn={this.state.player2Turn} pokeImg={this.state.player2.sprites.front_default} moves={this.state.player2Moves} baseHP={this.state.player2.stats[5].base_stat} currentHP={this.state.pokemon2HP}/>
           </li>
         </ul>
       )}

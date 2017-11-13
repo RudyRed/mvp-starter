@@ -10,20 +10,9 @@ class PokemonBattle extends React.Component {
     }
   }
 
-  // changeHandler(event) {
-  //   for (var move of this.props.moves) {
-  //     if (move.name === event.target.value) {
-  //       this.setState({
-  //         [event.target.id]: [move.name, move]
-  //       });
-  //     }
-  //   }
-  // }
 
   clickHandler(event) {
-
-    console.log(event.target.id, "ATTACK ID")
-
+    this.props.attack(event.target.id, this.props.playerNum)
   }
 
   render() {
