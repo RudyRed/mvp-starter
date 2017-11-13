@@ -86,8 +86,8 @@ class App extends React.Component {
       {(this.state.player1 && (!this.state.player1Moves || !this.state.player2Moves)) && (<img src={this.state.player1.sprites.front_default}/>)}
       {(this.state.player2 && (!this.state.player2Moves || !this.state.player1Moves)) && (<img src={this.state.player2.sprites.front_default}/>)}
       {(this.state.player1Moves && this.state.player2Moves) && (<ul id="menu">
-          <li><Pokemon1 pokeImage={this.state.player1.sprites.back_default} stats={this.state.player1.stats} moves={this.state.player1Moves}/></li>
-          {/* <li><Pokemon2 pokeImage={this.state.player2.sprites.front_default} stats={this.state.player2.stats} moves={this.state.player2Moves}/></li> */}
+          <li><Pokemon1 pokeName={this.state.player1.name} pokeImage={this.state.player1.sprites.back_default} stats={this.state.player1.stats} moves={this.state.player1Moves}/></li>
+          <li><Pokemon2 pokeName={this.state.player2.name} pokeImage={this.state.player2.sprites.front_default} stats={this.state.player2.stats} moves={this.state.player2Moves}/></li>
         </ul>)
       }
     </div>)
