@@ -1,10 +1,19 @@
 import React from 'react';
 
-class PokeDropList extends React.Component {
+class Pokemon2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pokemon: ''
+      speed: this.props.stats[0].base_stat,
+      sd: this.props.stats[1].base_stat,
+      sa: this.props.stats[2].base_stat,
+      defense: this.props.stats[3].base_stat,
+      atack: this.props.stats[4].base_stat,
+      hp: this.props.stats[5].base_stat,
+      move1: null,
+      move2: null,
+      move3: null,
+      move4: null
     }
   }
 
@@ -18,6 +27,7 @@ class PokeDropList extends React.Component {
   }
 
   render() {
+    console.log(this.props.stats)
     return  ( <div className="playerone">
       <form>Player {this.props.player}:<select value={this.state.value} onChange={this.changeHandler.bind(this)}>
         <option value="" hidden="hidden">Select your option</option>
@@ -30,4 +40,4 @@ class PokeDropList extends React.Component {
 
 
 
-export default PokeDropList;
+export default Pokemon2;

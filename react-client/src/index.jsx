@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-// import List from './components/List.jsx';
 import PokeDropList from './components/PokeDropList.jsx'
+import Pokemon1 from './components/Pokemon1.jsx'
+import Pokemon2 from './components/Pokemon2.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class App extends React.Component {
       success: (data) => {
         console.log(typeof data)
         if (player === 'One') {
+          console.log(data)
           this.setState({player1: data});
           this.loadPokemonsMoves(data.id, 1);
         } else {
@@ -81,8 +83,13 @@ class App extends React.Component {
       <h1>Item List</h1>
       {!this.state.player1 && (<PokeDropList player={'One'} pokeBox={this.state.pokeBox} handleSubmit={this.pokemonSelectionSubmit.bind(this)}/>)}
       {!this.state.player2 && (<PokeDropList player={'Two'} pokeBox={this.state.pokeBox} handleSubmit={this.pokemonSelectionSubmit.bind(this)}/>)}
-      {(this.state.player1 && (!this.state.player1Moves || !this.state.player2Moves)) && (<img src={this.state.player1.sprites.back_default}/>)}
+      {(this.state.player1 && (!this.state.player1Moves || !this.state.player2Moves)) && (<img src={this.state.player1.sprites.front_default}/>)}
       {(this.state.player2 && (!this.state.player2Moves || !this.state.player1Moves)) && (<img src={this.state.player2.sprites.front_default}/>)}
+      {(this.state.player1Moves && this.state.player2Moves) && (<ul id="menu">
+          <li><Pokemon1 pokeImage={this.state.player1.sprites.back_default} stats={this.state.player1.stats} moves={this.state.player1Moves}/></li>
+          {/* <li><Pokemon2 pokeImage={this.state.player2.sprites.front_default} stats={this.state.player2.stats} moves={this.state.player2Moves}/></li> */}
+        </ul>)
+      }
     </div>)
   }
 }

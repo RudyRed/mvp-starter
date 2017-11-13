@@ -18,10 +18,10 @@ class PokeDropList extends React.Component {
   }
 
   render() {
-    return  ( <div className="playerone">
+    return  ( <div className="droplist">
       <form>Player {this.props.player}:<select value={this.state.value} onChange={this.changeHandler.bind(this)}>
         <option value="" hidden="hidden">Select your option</option>
-        {this.props.pokeBox.map(pokemon => <option value={pokemon.id}>{pokemon.id}: {pokemon.name}</option>)}
+        {this.props.pokeBox.map(pokemon => <option value={pokemon.id}>{pokemon.name} #{pokemon.id}</option>)}
       </select> <input type="submit" value="Confirm Pokemon Choice" onClick={this.clickHandler.bind(this)}/> </form>
     </div>)
   }

@@ -78,7 +78,7 @@ var getAllPokemon = function(results, url, callback) {
             VALUES (${pokemon.id}, "${pokemon.name}", "https://pokeapi.co/api/v2/pokemon/${pokemon.id}")`
         connection.query(queryString, function(err, results, fields) {
           if (err) {
-            console.log(err);
+            // console.log(err);
           } else {
             console.log(`Pokemon # ${pokemon.id}, ${pokemon.name} added successfully!`)
             helpers.fetchPokemonMovesLoop(pokemon.moves, selectMoveIndex, function(err, info) {
@@ -107,11 +107,14 @@ getAllPokemon = Promise.promisify(getAllPokemon);
 
 selectAll('moves', '').then((data) => { // populates database if empty
   return getAllMoves(data, 'https://pokeapi.co/api/v2/move-category/0');
-}).then(() => {
+})
+.then(() => {
   return selectAll('pokemon', '');
-}).then((data) => {
-  return getAllPokemon(data, 'https://pokeapi.co/api/v2/pokemon/?limit=40');
-}).catch((e) => {
+})
+.then((data) => {
+  return getAllPokemon(data, 'https://pokeapi.co/api/v2/pokemon/?limit=151');
+})
+.catch((e) => {
   console.log(e);
   return;
 })
